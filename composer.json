@@ -1,11 +1,11 @@
 {
     "name": "hike/gravityforms",
     "description": "GravityForms mirror",
-    "type": "wordpress-plugin",
+    "type": "wordpress-muplugin",
     "authors": [
         {
-            "name": "Massim Knaapen",
-            "email": "massim@gohike.nl"
+            "name": "Maarten van Ee",
+            "email": "maarten@twelvetwentystudio.com"
         }
     ],
     "require": {}
