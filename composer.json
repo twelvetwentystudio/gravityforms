@@ -3,5 +3,11 @@
     "description": "Gravity Forms plugin",
     "type": "wordpress-plugin",
     "version": "2.5.14.3",
+    "authors": [
+        {
+            "name": "Maarten van Ee",
+            "email": "maarten@twelvetwentystudio.com"
+        }
+    ],
     "require": {}
 }
