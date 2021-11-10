@@ -1,0 +1,7 @@
+{
+    "name": "twelvetwentystudio/plugin-gravityforms",
+    "description": "Gravity Forms plugin",
+    "type": "wordpress-plugin",
+    "version": "2.5.14.3",
+    "require": {}
+}
