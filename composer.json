@@ -1,12 +1,11 @@
 {
-    "name": "twelvetwentystudio/gravityforms",
-    "description": "Gravity Forms plugin",
+    "name": "hike/gravityforms",
+    "description": "GravityForms mirror",
     "type": "wordpress-plugin",
-    "version": "2.5.14.3",
     "authors": [
         {
-            "name": "Maarten van Ee",
-            "email": "maarten@twelvetwentystudio.com"
+            "name": "Massim Knaapen",
+            "email": "massim@gohike.nl"
         }
     ],
     "require": {}

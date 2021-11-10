@@ -32,14 +32,6 @@ class GF_Block_Form extends GF_Block {
 	public $script_handle = 'gform_editor_block_form';
 
 	/**
-	 * Handle of primary block style.
-	 *
-	 * @since 2.5.6
-	 * @var   string
-	 */
-	public $style_handle = 'gform_editor_block_form';
-
-	/**
 	 * Block attributes.
 	 *
 	 * @since 2.4.10
@@ -53,7 +45,6 @@ class GF_Block_Form extends GF_Block {
 		'tabindex'    => array( 'type' => 'string' ),
 		'fieldValues' => array( 'type' => 'string' ),
 		'formPreview' => array( 'type' => 'boolean' ),
-		'imgPreview'  => array( 'type' => 'boolean' ),
 	);
 
 	/**
@@ -87,27 +78,15 @@ class GF_Block_Form extends GF_Block {
 	 */
 	public function scripts() {
 
-		$min  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
-		$deps = array(
-			'wp-blocks',
-			'wp-element',
-			'wp-components',
-			'wp-i18n',
-		);
-
-		global $pagenow;
-		if ( $pagenow !== 'widgets.php' ) {
-			$deps[] = 'wp-editor';
-		}
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 
 		return array(
 			array(
-				'handle'    => $this->script_handle,
-				'in_footer' => true,
-				'src'       => GFCommon::get_base_url() . "/js/blocks{$min}.js",
-				'deps'      => $deps,
-				'version'   => $min ? GFForms::$version : filemtime( GFCommon::get_base_path() . '/js/blocks.js' ),
-				'callback'  => array( $this, 'localize_script' ),
+				'handle'   => $this->script_handle,
+				'src'      => GFCommon::get_base_url() . "/js/blocks{$min}.js",
+				'deps'     => array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n', 'wp-editor' ),
+				'version'  => $min ? GFForms::$version : filemtime( GFCommon::get_base_path() . '/js/blocks.js' ),
+				'callback' => array( $this, 'localize_script' ),
 			),
 		);
 
@@ -126,9 +105,7 @@ class GF_Block_Form extends GF_Block {
 			$script['handle'],
 			'gform_block_form',
 			array(
-				'adminURL' => admin_url( 'admin.php' ),
-				'forms'    => $this->get_forms(),
-				'preview'  => GFCommon::get_base_url() . '/images/gf_block_preview.svg',
+				'forms' => $this->get_forms(),
 			)
 		);
 
@@ -152,25 +129,12 @@ class GF_Block_Form extends GF_Block {
 
 		// Add Gravity Forms styling if CSS is enabled.
 		if ( '1' !== get_option( 'rg_gforms_disable_css', false ) ) {
-			$deps = array_merge( $deps, array( 'gform_basic', 'gforms_formsmain_css', 'gforms_ready_class_css', 'gforms_browsers_css', 'gform_theme' ) );
-
-			/**
-			 * Allows users to disable the main theme.css file from being loaded on the Front End.
-			 *
-			 * @since 2.5-beta-3
-			 *
-			 * @param boolean Whether to disable the theme css.
-			 */
-			$disable_theme_css = apply_filters( 'gform_disable_form_theme_css', false );
-
-			if ( ! $disable_theme_css ) {
-				$deps[] = 'gform_theme';
-			}
+			$deps = array_merge( $deps, array( 'gforms_formsmain_css', 'gforms_ready_class_css', 'gforms_browsers_css' ) );
 		}
 
 		return array(
 			array(
-				'handle'  => $this->style_handle,
+				'handle'  => 'gform_editor_block_form',
 				'src'     => GFCommon::get_base_url() . '/css/blocks.min.css',
 				'deps'    => $deps,
 				'version' => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( GFCommon::get_base_path() . '/css/blocks.min.css' ) : GFForms::$version,
@@ -269,7 +233,7 @@ class GF_Block_Form extends GF_Block {
 		}
 
 		// Get form objects.
-		$form_objects = GFAPI::get_forms( true, false, 'title', 'ASC' );
+		$form_objects = GFAPI::get_forms();
 
 		// Loop through forms, add conditional logic check.
 		foreach ( $form_objects as $form ) {
@@ -280,14 +244,7 @@ class GF_Block_Form extends GF_Block {
 			);
 		}
 
-		/**
-		 * Modify the list of available forms displayed in the Form block.
-		 *
-		 * @since 2.4.23
-		 *
-		 * @param array $forms A collection of active forms on site.
-		 */
-		return apply_filters( 'gform_block_form_forms', $forms );
+		return $forms;
 
 	}
 
