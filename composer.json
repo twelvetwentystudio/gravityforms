@@ -1,6 +1,6 @@
 {
-    "name": "hike/gravityforms",
-    "description": "GravityForms mirror",
+    "name": "twelvetwentystudio/gravityforms",
+    "description": "Gravity Forms mirror",
     "type": "wordpress-muplugin",
     "authors": [
         {
